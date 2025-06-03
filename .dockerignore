@@ -1,0 +1,6 @@
+node_modules
+.git
+.DS_Store
+Dockerfile
+docker-compose.yml
+*.db
