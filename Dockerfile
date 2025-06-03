@@ -3,26 +3,32 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
+# Create required directories explicitly
+RUN mkdir -p /app/backend /app/frontend/public /app/frontend/src
+
 # Copy backend files
-COPY backend/package*.json ./backend/
-RUN cd backend && npm install
+COPY backend/package*.json /app/backend/
+RUN cd /app/backend && npm install
 
 # Copy frontend files
-COPY frontend/package*.json ./frontend/
-RUN cd frontend && npm install
+COPY frontend/package*.json /app/frontend/
+RUN cd /app/frontend && npm install
 
-# Build frontend
-COPY frontend/ ./frontend/
-RUN cd frontend && npm run build
+# Copy frontend source code
+COPY frontend/public /app/frontend/public
+COPY frontend/src /app/frontend/src
 
-# Copy backend source
-COPY backend/ ./backend/
+# Build React app
+RUN cd /app/frontend && npm run build
+
+# Copy backend source code
+COPY backend /app/backend
 
 # Move frontend build to backend public directory
-RUN mv frontend/build backend/public
+RUN mv /app/frontend/build /app/backend/public
 
 # Expose port
 EXPOSE 5000
 
 # Start application
-CMD ["node", "backend/app.js"]
+CMD ["node", "/app/backend/app.js"]
