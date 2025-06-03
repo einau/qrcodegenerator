@@ -1,0 +1,15 @@
+{
+  "name": "certificate-verifier",
+  "version": "1.0.0",
+  "description": "Fly Ontime Aviation Certificate Verification System",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "import": "node import.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "qrcode": "^1.5.3",
+    "sqlite3": "^5.1.6"
+  }
+}
