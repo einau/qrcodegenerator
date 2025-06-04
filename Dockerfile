@@ -2,6 +2,14 @@ FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
+# Set entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+RUN apk add --no-cache python3 py3-pip git bash && \
+    python3 -m venv /venv && \
+    . /venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install azure-cli
 
 # Install dependencies for Azure CLI (optional) and other tools
 RUN apk add --no-cache python3 py3-pip git bash && \
@@ -38,5 +46,4 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD /app/healthcheck.sh
 
-# Set entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"]
+
