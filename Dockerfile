@@ -6,24 +6,25 @@ WORKDIR /app
 # Set entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-# Install required system packages (including dev tools for building psutil)
+# Install all required build dependencies
 RUN apk add --no-cache \
     python3 \
     py3-pip \
-    git \
-    bash \
+    python3-dev \
     gcc \
     musl-dev \
     libffi-dev \
     openssl-dev \
     linux-headers \
     make \
-    && python3 -m venv /venv \
-    && . /venv/bin/activate \
-    && pip install --upgrade pip \
-    && pip install azure-cli \
-    && deactivate \
-    && apk del gcc musl-dev linux-headers make libffi-dev openssl-dev
+    git \
+    bash && \
+    python3 -m venv /venv && \
+    . /venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install azure-cli && \
+    deactivate && \
+    apk del gcc musl-dev linux-headers make libffi-dev openssl-dev python3-dev
 
 # Create required directories
 RUN mkdir -p /app/backend /app/frontend/public /app/frontend/src
