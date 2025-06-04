@@ -1,5 +1,15 @@
 FROM node:18-alpine
 
+# Install blobfuse and dependencies
+RUN apk add --no-cache fuse3 curl gnupg \
+    && curl -L https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apk/keys/microsoft.gpg \
+    && echo "https://packages.microsoft.com/alpine/v3.18/main" >> /etc/apk/repositories \
+    && apk add blobfuse=1.4.5-r0 --allow-untrusted
+
+# Set working directory
+WORKDIR /app
+
+# ... rest of Dockerfile remains same ...
 # Set working directory
 WORKDIR /app
 
