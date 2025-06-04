@@ -2,19 +2,28 @@ FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
+
 # Set entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-RUN apk add --no-cache python3 py3-pip git bash && \
-    python3 -m venv /venv && \
-    . /venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install azure-cli
-
-# Install dependencies for Azure CLI (optional) and other tools
-RUN apk add --no-cache python3 py3-pip git bash && \
-    pip3 install --upgrade pip && \
-    pip3 install azure-cli
+# Install required system packages (including dev tools for building psutil)
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    git \
+    bash \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    linux-headers \
+    make \
+    && python3 -m venv /venv \
+    && . /venv/bin/activate \
+    && pip install --upgrade pip \
+    && pip install azure-cli \
+    && deactivate \
+    && apk del gcc musl-dev linux-headers make libffi-dev openssl-dev
 
 # Create required directories
 RUN mkdir -p /app/backend /app/frontend/public /app/frontend/src
@@ -45,5 +54,3 @@ EXPOSE 5000
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD /app/healthcheck.sh
-
-
