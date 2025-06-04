@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azure-cli:2.59.0
+FROM Alpine 18.0
 
 # Set working directory
 WORKDIR /app
