@@ -1,4 +1,4 @@
-FROM Alpine 18.0
+FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
